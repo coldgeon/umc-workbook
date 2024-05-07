@@ -1,9 +1,9 @@
-import Movie from './components/MovieApp';
+import Router from './Routes';
 
 function App() {
   return (
     <>
-      <Movie></Movie>
+      <Router></Router>
     </>
   );
 }

@@ -1,6 +1,9 @@
 import styled from 'styled-components';
-import { movies } from './MovieList';
 import { useEffect, useState } from 'react';
+import { fetchMovies } from '../../api';
+import { useLocation } from 'react-router-dom';
+import { MoonLoader } from 'react-spinners';
+import { Link } from 'react-router-dom';
 
 const MovieComponent = styled.div``;
 
@@ -14,7 +17,7 @@ const MovieWrapper = styled.div`
 const MovieTitle = styled.div`
   width: 240px;
   height: 70px;
-  background-color: #373b6a;
+  background-color: rgba(0, 0, 0, 0.7);
   text-align: left;
 `;
 const MoviePoster = styled.div`
@@ -55,37 +58,64 @@ const AverageSpan = styled.div`
   padding-right: 7px;
 `;
 
+const LoaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+`;
+
 function Movie() {
   const [movie, setMovie] = useState([]);
-
-  // function movieTarget(target) {}
+  const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
-    setMovie(movies.results);
+    fetchMovies(location.pathname).then((json) => setMovie(json.results));
+    setLoading(false);
   }, []);
-  console.log(movie);
+
+  console.log(movie[0]);
 
   return (
     <>
-      <MovieWrapper>
-        {movie.map((mv) => (
-          <MovieComponent key={mv.id}>
-            <MoviePoster
-              bgimg={'https://image.tmdb.org/t/p/original' + mv.poster_path}
+      {loading ? (
+        <LoaderWrapper>
+          <MoonLoader color="#e74c3c" size={100} />
+        </LoaderWrapper>
+      ) : (
+        <MovieWrapper>
+          {movie.map((mv) => (
+            <Link
+              key={mv.id}
+              to={`/movie/${mv.title}`}
+              state={{
+                title: `${mv.title}`,
+                overview: `${mv.overview}`,
+                poster_path: `${mv.poster_path}`,
+                vote_average: `${mv.vote_average}`,
+              }}
             >
-              <MovieDetail>
-                {mv.title}
-                {mv.overview}
-              </MovieDetail>
-            </MoviePoster>
-            <MovieTitle>
-              <TitleDiv>{mv.title}</TitleDiv>
+              <MovieComponent key={mv.id}>
+                <MoviePoster
+                  bgimg={`https://image.tmdb.org/t/p/original${mv.poster_path}`}
+                >
+                  <MovieDetail>
+                    {mv.title}
+                    {mv.overview}
+                  </MovieDetail>
+                </MoviePoster>
+                <MovieTitle>
+                  <TitleDiv>{mv.title}</TitleDiv>
 
-              <AverageSpan>{mv.vote_average}</AverageSpan>
-            </MovieTitle>
-          </MovieComponent>
-        ))}
-      </MovieWrapper>
+                  <AverageSpan>🌟{mv.vote_average}</AverageSpan>
+                </MovieTitle>
+              </MovieComponent>
+            </Link>
+          ))}
+        </MovieWrapper>
+      )}
     </>
   );
 }

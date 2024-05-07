@@ -64,6 +64,7 @@ button:focus-visible {
 } */
 
 body {
-  background-color: #22264c;
+  background-color: rgba(0, 0, 0, 0.9);
   color: white;
+  font-family: 'Arial', sans-serif;
 }
