@@ -91,10 +91,13 @@ function Movie() {
               key={mv.id}
               to={`/movie/${mv.title}`}
               state={{
+                id: `${mv.id}`,
                 title: `${mv.title}`,
                 overview: `${mv.overview}`,
-                poster_path: `${mv.poster_path}`,
+                backdrop_path: `${mv.backdrop_path}`,
                 vote_average: `${mv.vote_average}`,
+                poster_path: `${mv.poster_path}`,
+                release_date: `${mv.release_date}`,
               }}
             >
               <MovieComponent key={mv.id}>
