@@ -1,12 +1,13 @@
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { fetchCredits } from '../../api';
 
 const DetailWrapper = styled.div`
   background-image: url(${(props) => props.bgimg});
   background-position: center;
   background-repeat: repeat-x;
   background-size: cover;
-  /* background-color: rgba(0, 0, 0, 0.7); */
   height: 100vh;
   width: 100vw;
 `;
@@ -67,19 +68,29 @@ const OverviewSpan = styled.span`
 `;
 
 function Detail() {
-  let mvDetail = useLocation().state;
-  let voteStar = Math.floor(Number(mvDetail.vote_average));
+  const mvDetail = useLocation().state;
+  const voteStar = Math.floor(Number(mvDetail.vote_average));
+  const [credit, setCredit] = useState([]);
+
+  //credit 불러오기 데이터 가져오기까지는 함 이 뒤에는 귀찮
+  useEffect(() => {
+    fetchCredits(mvDetail.id).then((json) => setCredit(json));
+  }, []);
+
+  console.log(credit);
+
+  //별점 만들기
   let star = '🌟';
+  console.log(mvDetail);
+
   for (var i = 0; i < voteStar - 1; i++) {
     star += '🌟';
   }
-  console.log(mvDetail);
-  console.log(voteStar);
   return (
     <>
       <DetailWrapper
         key={mvDetail.id}
-        bgimg={`https://image.tmdb.org/t/p/original${mvDetail.poster_path}`}
+        bgimg={`https://image.tmdb.org/t/p/original${mvDetail.backdrop_path}`}
       >
         <PosterWrapper>
           <PosterMvDiv>

@@ -72,12 +72,12 @@ function Movie() {
   const location = useLocation();
 
   useEffect(() => {
-    fetchMovies(location.pathname).then((json) => setMovie(json.results));
+    fetchMovies(location.pathname).then((json) =>
+      setMovie(json.results.slice(0, 15))
+    );
     setLoading(false);
   }, []);
-
-  console.log(movie[0]);
-
+  console.log(movie);
   return (
     <>
       {loading ? (
@@ -89,7 +89,7 @@ function Movie() {
           {movie.map((mv) => (
             <Link
               key={mv.id}
-              to={`/movie/${mv.title}`}
+              to={`/movie/${mv.id}`}
               state={{
                 id: `${mv.id}`,
                 title: `${mv.title}`,

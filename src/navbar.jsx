@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -36,22 +35,26 @@ const NavItem = styled.li`
 `;
 
 function Navbar() {
-  const [login, setLogin] = useState(true);
-
+  //로그인 누르면 로그아웃으로 나타나게 하는 로직
+  // const [login, setLogin] = useState(true);
+  // {login ? (
+  //   <Link to={'/'} onClick={() => setLogin(() => false)}>
+  //     <NavItem>로그인</NavItem>
+  //   </Link>
+  // ) : (
+  //   <Link to={'/'} onClick={() => setLogin(() => true)}>
+  //     <NavItem>로그아웃</NavItem>
+  //   </Link>
+  // )}
   return (
     <Nav>
-      <Logo>UMC Movie</Logo>
+      <Link to={'/'}>
+        <Logo>UMC Movie</Logo>
+      </Link>
       <NavList>
-        {login ? (
-          <Link to={'/'} onClick={() => setLogin(() => false)}>
-            <NavItem>로그인</NavItem>
-          </Link>
-        ) : (
-          <Link to={'/'} onClick={() => setLogin(() => true)}>
-            <NavItem>로그아웃</NavItem>
-          </Link>
-        )}
-
+        <Link to={'/signup'}>
+          <NavItem>회원가입</NavItem>
+        </Link>
         <Link to={'/popular'}>
           <NavItem>Popular</NavItem>
         </Link>
